@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Nov 26 12:41:55 2021
+
+@author: zihuiouyang
+"""
+import tensorflow as tf
+#%%
+class MyDenseLayer(tf.keras.layers.Layer):
+  def __init__(self, num_outputs):
+    super(MyDenseLayer, self).__init__()
+    self.num_outputs = num_outputs
+
+  def build(self, input_shape):
+    w_T = tf.random_normal_initializer()
+    self.w_T = tf.Variable(
+        initial_value=w_T(shape=(input_shape[-1], self.units),
+                             dtype='float32'),
+        trainable=True)
+    
+    b_T = tf.constant_initializer(-1)
+    self.b_T = tf.Variable(
+        initial_value=b_T(shape=(self.units,), dtype='float32'),
+        trainable=True)
+    
+    W = tf.random_normal_initializer()
+    self.W = tf.Variable(
+        initial_value=W(shape=(input_shape[-1], self.units),
+                             dtype='float32'),
+        trainable=True)
+    
+    b = tf.constant_initializer(0.1)
+    self.b = tf.Variable(
+        initial_value=b(shape=(self.units,), dtype='float32'),
+        trainable=True)
+    
+
+  def call(self, inputs):
+    T = tf.math.sigmoid(tf.matmul(inputs, self.W_T) + self.b_T, name="transform_gate")
+    H = tf.nn.relu(tf.matmul(inputs, self.W) + self.b, name="activation")
+    C = tf.math.subtract(1, H, name="carry")
+    return tf.math.add(tf.matmul(H, T), tf.matmul(input, C))
