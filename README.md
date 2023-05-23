@@ -1,2 +1,3 @@
-# Deep_learning_prroject
-A repo for ECBM 4040 project
+# QANet_TensorFlow
+A TensorFlow implementation of QANet. (https://arxiv.org/abs/1804.09541)
+
